@@ -6,6 +6,7 @@ if((!isset($_SESSION['nome']) == true) and (!isset($_SESSION['telefone']) == tru
 	header('Location: cliente_agendar.php');
 }
 ?>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
