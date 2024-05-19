@@ -16,6 +16,6 @@ if((!isset($_SESSION['nome']) == true) and (!isset($_SESSION['telefone']) == tru
 <body>
     <h1> AGENDAR</h1>
     <br><br>
-    <a href="sair2.php">sair</a>
+    <a href="sair.php">sair</a>
 </body>
 </html>
