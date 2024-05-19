@@ -36,5 +36,4 @@ else{
     header('Location: cliente_agendamentos.php');
    // exit();
 }
-
 ?>
