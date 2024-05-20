@@ -6,17 +6,20 @@ if((!isset($_SESSION['nome']) == true) and (!isset($_SESSION['telefone']) == tru
 	header('Location: cliente_agendar.php');
 }
 ?>
-	
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BARBEARIA</title>
+    <link rel="stylesheet" href="telas_cliente.css">
 </head>
 <body>
-    <h1> AGENDAR</h1>
-    <br><br>
-    <a href="sair.php">sair</a>
+    <img src="./logo.png"></img>
+    <div>
+       <h1> AGENDAR</h1>
+        <br><br>
+        <a href="sair.php">sair</a> 
+    </div>
 </body>
 </html>
