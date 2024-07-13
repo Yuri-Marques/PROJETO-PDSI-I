@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Verifica se o cliente está logado
 if (!isset($_SESSION['nome']) || !isset($_SESSION['telefone'])) {
     header('Location: cliente_agendar.php');
