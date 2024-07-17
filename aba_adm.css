@@ -1,0 +1,46 @@
+.botoes{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    background-color: rgba(0, 0, 0, 0.685);
+    padding: 30px;
+    border-radius: 15px;
+}
+body{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+    color: gray;
+    background: url(fundo.jpg) no-repeat;
+    background-size: cover;
+}
+body img{
+    width: 200px;
+    height: 200px;
+}
+div a{
+    text-decoration: none;
+    color: rgb(234, 117, 14);
+    background-color: rgba(126, 126, 126, 0.212);
+    border-radius: 10px;
+    padding: 6px;
+}
+div a:hover{
+    background-color: rgba(255, 255, 255, 0.349);
+}
+footer img{
+    width: 30px;
+    height: 30px;
+}
+footer{
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 180%);
+}
+footer a{
+    text-decoration: none;
+    margin: 20px;
+
+}
