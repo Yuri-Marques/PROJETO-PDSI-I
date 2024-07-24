@@ -44,7 +44,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Agendamentos</title>
+    <title>BARBEARIA</title>
     <link rel="stylesheet" href="telas_cliente.css">
 </head>
 <body>
@@ -72,7 +72,8 @@ $result = $stmt->get_result();
             ?>
         </table>
         <br>
-        <a href="sair.php">Cancelar agendamento</a>
+        <a href="cancelar_agendamento.php">Cancelar agendamento</a>
+        <br>
         <br>
         <a href="sair.php">Sair</a> <!-- Link para logout -->
     </div>

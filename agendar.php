@@ -35,8 +35,8 @@ $result_servicos = $conex->query($sql_servicos);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escolha um Barbeiro e Serviço</title>
-    <link rel="stylesheet" href="telas_cliente.css">
+    <title>BARBEARIA</title>
+    <link rel="stylesheet" href="telas_cliente.css"> 
 </head>
 <body>
     <img src="./logo.png" alt="Logo da Barbearia">
@@ -54,7 +54,7 @@ $result_servicos = $conex->query($sql_servicos);
                 ?>
             </select>
             <br><br>
-            <input type="submit" value="Selecionar">
+            <input type="submit" value="Continuar">
        </form>
        <br><br>
        <a href="sair.php">Sair</a> <!-- Link para logout -->
