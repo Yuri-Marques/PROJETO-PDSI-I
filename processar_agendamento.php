@@ -9,7 +9,7 @@ if (!isset($_SESSION['cliente_id'])) {
 
 // Verifica se foram recebidos os dados necessários via POST
 if (!isset($_POST['barbeiro_id']) || !isset($_POST['hora_inicio']) || !isset($_POST['servico_id'])) {
-    header('Location: escolha_barbeiro.php');
+    header('Location: agendar.php');
     exit;
 }
 
@@ -52,7 +52,7 @@ if ($stmt->execute()) {
     exit;
 } else {
     // Em caso de erro, redireciona para página de erro
-    header('Location: agendamento_erro.php');
+    header('Location: agendar.php');
     exit;
 }
 

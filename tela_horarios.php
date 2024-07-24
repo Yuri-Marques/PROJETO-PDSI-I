@@ -80,7 +80,7 @@ $result_servicos = $conex->query($sql_servicos);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horários Disponíveis - <?php echo $nome_barbeiro; ?></title>
+    <title>BARBEARIA</title>
     <link rel="stylesheet" href="telas_cliente.css">
 </head>
 <body>

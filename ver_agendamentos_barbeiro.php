@@ -40,16 +40,19 @@ if ($result_auth->num_rows == 1) {
     exit;
 }
 
-// Consulta SQL para obter os agendamentos do barbeiro
+// Data atual
+$data_atual = date('Y-m-d');
+
+// Consulta SQL para obter os agendamentos do barbeiro no dia atual
 $sql_agendamentos = "SELECT a.idagendamentos, c.nome AS nome_cliente, s.nome_servico, a.data, a.hora_inicio
                      FROM agendamentos a
                      INNER JOIN cliente c ON a.cliente_idcliente = c.idcliente
                      INNER JOIN servico s ON a.servico_idservico = s.idservico
-                     WHERE a.barbeiro_idbarbeiro = ?
-                     ORDER BY a.data DESC, a.hora_inicio DESC";
+                     WHERE a.barbeiro_idbarbeiro = ? AND a.data = ?
+                     ORDER BY a.hora_inicio DESC";
 
 $stmt = $conex->prepare($sql_agendamentos);
-$stmt->bind_param("i", $barbeiro_id);
+$stmt->bind_param("is", $barbeiro_id, $data_atual);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -60,7 +63,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Agendamentos</title>
+    <title>BARBEARIA</title>
     <link rel="stylesheet" href="telas_cliente.css">
 </head>
 <body>
@@ -90,9 +93,10 @@ $result = $stmt->get_result();
             ?>
         </table>
         <br>
-        <a href="sair.php">Cancelar agendamento</a>
+        <a href="cancelar_agendamento_barbeiro.php">Cancelar agendamento</a>
         <br>
-        <a href="sair.php">Sair</a> <!-- Link para logout -->
+        <br>
+        <a href="aba_adm.php">Voltar</a> <!-- Link para logout -->
     </div>
 </body>
 </html>

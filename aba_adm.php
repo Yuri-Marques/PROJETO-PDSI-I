@@ -21,7 +21,7 @@ if((!isset($_SESSION['usuario']) == true) and (!isset($_SESSION['senha']) == tru
         <br><br>
         <a href="ver_agendamentos_barbeiro.php">VER AGENDAMENTOS</a>
         <br><br>
-        <a href="login.php">AGENDAR</a>
+        <a href="agendar2.php">AGENDAR</a>
         <br><br>
         <a href="sair.php">sair</a>
     </div>
