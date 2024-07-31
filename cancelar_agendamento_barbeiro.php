@@ -95,9 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="time" id="hora_inicio" name="hora_inicio" required>
             <br><br>
             <button type="submit">Cancelar agendamento</button>
-        </form>
-        <br>
-        <a href="ver_agendamentos_barbeiro.php">Voltar</a>
+            <br>
+            <br>
+            <a href="ver_agendamentos_barbeiro.php">Voltar</a>
+        </form> 
     </div>
 </body>
 </html>

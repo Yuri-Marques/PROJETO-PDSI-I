@@ -95,7 +95,6 @@ $result = $stmt->get_result();
         <br>
         <a href="cancelar_agendamento_barbeiro.php">Cancelar agendamento</a>
         <br>
-        <br>
         <a href="aba_adm.php">Voltar</a> <!-- Link para logout -->
     </div>
 </body>

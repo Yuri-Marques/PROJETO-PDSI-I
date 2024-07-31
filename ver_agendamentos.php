@@ -74,7 +74,6 @@ $result = $stmt->get_result();
         <br>
         <a href="cancelar_agendamento.php">Cancelar agendamento</a>
         <br>
-        <br>
         <a href="sair.php">Sair</a> <!-- Link para logout -->
     </div>
 </body>

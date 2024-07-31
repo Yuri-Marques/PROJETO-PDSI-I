@@ -93,9 +93,9 @@ if ($result_barbeiro->num_rows > 0) {
             <br><br>
             <input type="hidden" name="barbeiro_id" value="<?php echo $barbeiro_id; ?>">
             <input type="submit" value="Continuar">
+            <br><br>
+            <a href="aba_adm.php">Voltar</a> <!-- Link para logout -->
        </form>
-       <br><br>
-       <a href="aba_adm.php">Voltar</a> <!-- Link para logout -->
     </div>
 </body>
 </html>

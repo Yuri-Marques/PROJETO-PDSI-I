@@ -115,9 +115,9 @@ $result_servicos = $conex->query($sql_servicos);
             </select>
             <br><br>
             <input type="submit" value="Agendar">
+            <br><br>
+            <a href="sair.php">Sair</a> <!-- Link para logout -->
        </form>
-       <br><br>
-       <a href="sair.php">Sair</a> <!-- Link para logout -->
     </div>
 </body>
 </html>
