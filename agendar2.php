@@ -2,7 +2,7 @@
 session_start();
 
 // Verifica se o barbeiro está logado
-if((!isset($_SESSION['usuario']) == true) and (!isset($_SESSION['senha']) == true)){
+if(!isset($_SESSION['usuario']) || !isset($_SESSION['senha'])) {
     unset($_SESSION['usuario']);
     unset($_SESSION['senha']);
     header('Location: login.php');
@@ -23,10 +23,32 @@ if ($conex->connect_error) {
     die("Erro na conexão: " . $conex->connect_error);
 }
 
+// Função para obter os horários disponíveis que ainda não foram agendados
+function getHorariosDisponiveis($conex, $barbeiro_id) {
+    $sql = "CALL get_horarios_disponiveis(?)";
+    $stmt = $conex->prepare($sql);
+    $stmt->bind_param("i", $barbeiro_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $horarios = [];
+        while ($row = $result->fetch_assoc()) {
+            $horarios[] = $row;
+        }
+        return $horarios;
+    } else {
+        return []; // Retorna array vazio se não houver horários disponíveis
+    }
+}
+
 // Obtém o id do barbeiro logado
 $usuario = $_SESSION['usuario'];
-$sql_barbeiro = "SELECT idbarbeiro FROM barbeiro WHERE usuario = '$usuario'";
-$result_barbeiro = $conex->query($sql_barbeiro);
+$sql_barbeiro = "SELECT idbarbeiro FROM barbeiro WHERE usuario = ?";
+$stmt_barbeiro = $conex->prepare($sql_barbeiro);
+$stmt_barbeiro->bind_param("s", $usuario);
+$stmt_barbeiro->execute();
+$result_barbeiro = $stmt_barbeiro->get_result();
 
 if ($result_barbeiro->num_rows > 0) {
     $row_barbeiro = $result_barbeiro->fetch_assoc();
@@ -37,8 +59,7 @@ if ($result_barbeiro->num_rows > 0) {
     $result_servicos = $conex->query($sql_servicos);
 
     // Obtém a lista de horários disponíveis para o barbeiro logado
-    $sql_horarios = "SELECT idhorario, hora_inicio, hora_fim FROM horarios_disponiveis WHERE barbeiro_idbarbeiro = $barbeiro_id AND data >= CURDATE()";
-    $result_horarios = $conex->query($sql_horarios);
+    $horarios_disponiveis = getHorariosDisponiveis($conex, $barbeiro_id);
 } else {
     die("Erro: Barbeiro não encontrado.");
 }
@@ -84,9 +105,13 @@ if ($result_barbeiro->num_rows > 0) {
             <select name="horario_id" id="horario" required>
                 <option value=""></option>
                 <?php
-                    // Loop para exibir os horários disponíveis
-                    while ($row = $result_horarios->fetch_assoc()) {
-                        echo "<option value='" . $row['idhorario'] . "'>" . $row['hora_inicio'] . " - " . $row['hora_fim'] . "</option>";
+                    // Verifica se há horários disponíveis
+                    if (!empty($horarios_disponiveis)) {
+                        foreach ($horarios_disponiveis as $horario) {
+                            echo "<option value='" . $horario['hora_inicio'] . "'>" . $horario['hora_inicio'] . " - " . $horario['hora_fim'] . "</option>";
+                        }
+                    } else {
+                        echo "<option value=''>Nenhum horário disponível para hoje.</option>";
                     }
                 ?>
             </select>
@@ -94,7 +119,7 @@ if ($result_barbeiro->num_rows > 0) {
             <input type="hidden" name="barbeiro_id" value="<?php echo $barbeiro_id; ?>">
             <input type="submit" value="Continuar">
             <br><br>
-            <a href="aba_adm.php">Voltar</a> <!-- Link para logout -->
+            <a href="aba_adm.php">Voltar</a> <!-- Link para voltar -->
        </form>
     </div>
 </body>

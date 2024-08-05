@@ -31,22 +31,9 @@ if ($conex->connect_error) {
 
 // Função para obter os horários disponíveis que ainda não foram agendados
 function getHorariosDisponiveis($conex, $barbeiro_id) {
-    $data_atual = date('Y-m-d');
-    
-    // Consulta SQL para obter horários disponíveis que não foram agendados
-    $sql = "SELECT hd.hora_inicio, hd.hora_fim 
-            FROM horarios_disponiveis hd
-            LEFT JOIN agendamentos a 
-            ON hd.barbeiro_idbarbeiro = a.barbeiro_idbarbeiro 
-            AND hd.data = a.data 
-            AND hd.hora_inicio = a.hora_inicio
-            WHERE hd.barbeiro_idbarbeiro = ? 
-            AND hd.data = ?
-            AND a.idagendamentos IS NULL
-            ORDER BY hd.hora_inicio";
-
+    $sql = "CALL get_horarios_disponiveis(?)";
     $stmt = $conex->prepare($sql);
-    $stmt->bind_param("is", $barbeiro_id, $data_atual);
+    $stmt->bind_param("i", $barbeiro_id);
     $stmt->execute();
     $result = $stmt->get_result();
     

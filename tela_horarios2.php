@@ -2,7 +2,7 @@
 session_start();
 
 // Verifica se o barbeiro está logado
-if((!isset($_SESSION['usuario']) == true) and (!isset($_SESSION['senha']) == true)){
+if (!isset($_SESSION['usuario']) || !isset($_SESSION['senha'])) {
     unset($_SESSION['usuario']);
     unset($_SESSION['senha']);
     header('Location: login.php');
@@ -33,8 +33,11 @@ if (isset($_POST['nome_cliente']) && isset($_POST['telefone_cliente']) && isset(
     $barbeiro_id = $_POST['barbeiro_id'];
 
     // Obtém a data e hora do horário selecionado
-    $sql_horario = "SELECT data, hora_inicio, hora_fim FROM horarios_disponiveis WHERE idhorario = $horario_id";
-    $result_horario = $conex->query($sql_horario);
+    $sql_horario = "SELECT data, hora_inicio, hora_fim FROM horarios_disponiveis WHERE idhorario = ?";
+    $stmt_horario = $conex->prepare($sql_horario);
+    $stmt_horario->bind_param("i", $horario_id);
+    $stmt_horario->execute();
+    $result_horario = $stmt_horario->get_result();
 
     if ($result_horario->num_rows > 0) {
         $row_horario = $result_horario->fetch_assoc();
@@ -42,22 +45,30 @@ if (isset($_POST['nome_cliente']) && isset($_POST['telefone_cliente']) && isset(
         $hora_inicio = $row_horario['hora_inicio'];
         $hora_fim = $row_horario['hora_fim'];
 
-        // Insere o cliente na tabela 'cliente'
-        $sql_cliente = "INSERT INTO cliente (nome, telefone) VALUES ('$nome_cliente', '$telefone_cliente')";
-        if ($conex->query($sql_cliente) === TRUE) {
-            $cliente_id = $conex->insert_id;
+        // Verifica se o horário selecionado é o mesmo que o horário obtido
+        if ($hora_inicio && $hora_fim) {
+            // Insere o cliente na tabela 'cliente'
+            $sql_cliente = "INSERT INTO cliente (nome, telefone) VALUES (?, ?)";
+            $stmt_cliente = $conex->prepare($sql_cliente);
+            $stmt_cliente->bind_param("ss", $nome_cliente, $telefone_cliente);
+            if ($stmt_cliente->execute()) {
+                $cliente_id = $conex->insert_id;
 
-            // Insere o agendamento na tabela 'agendamentos'
-            $sql_agendamento = "INSERT INTO agendamentos (barbeiro_idbarbeiro, cliente_idcliente, servico_idservico, data, hora_inicio, hora_fim) 
-                                VALUES ('$barbeiro_id', '$cliente_id', '$servico_id', '$data', '$hora_inicio', '$hora_fim')";
-
-            if ($conex->query($sql_agendamento) === TRUE) {
-                $_SESSION['message'] = "Agendamento realizado com sucesso!";
+                // Insere o agendamento na tabela 'agendamentos'
+                $sql_agendamento = "INSERT INTO agendamentos (barbeiro_idbarbeiro, cliente_idcliente, servico_idservico, data, hora_inicio, hora_fim) 
+                                    VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt_agendamento = $conex->prepare($sql_agendamento);
+                $stmt_agendamento->bind_param("iiisss", $barbeiro_id, $cliente_id, $servico_id, $data, $hora_inicio, $hora_fim);
+                if ($stmt_agendamento->execute()) {
+                    $_SESSION['message'] = "Agendamento realizado com sucesso!";
+                } else {
+                    $_SESSION['message'] = "Erro ao realizar o agendamento: " . $conex->error;
+                }
             } else {
-                $_SESSION['message'] = "Erro ao realizar o agendamento: " . $conex->error;
+                $_SESSION['message'] = "Erro ao inserir cliente: " . $conex->error;
             }
         } else {
-            $_SESSION['message'] = "Erro ao inserir cliente: " . $conex->error;
+            $_SESSION['message'] = "Horário selecionado é inválido.";
         }
     } else {
         $_SESSION['message'] = "Horário não encontrado.";
